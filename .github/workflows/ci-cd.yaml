@@ -1,0 +1,70 @@
+name: GKE CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  GKE_CLUSTER: ${{ vars.GKE_CLUSTER }}
+  GKE_LOCATION: ${{ vars.GKE_LOCATION }}
+  GAR_REGION: ${{ vars.GAR_REGION }}
+  GAR_REPOSITORY: ${{ vars.GAR_REPOSITORY }}
+  IMAGE_NAME: web
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r app/requirements.txt
+      - run: python -m py_compile app/server.py
+      - uses: azure/setup-helm@v4
+        with:
+          version: latest
+      - run: helm lint helm/cloud-native-app
+
+  build-and-deploy:
+    if: github.event_name == 'push'
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Configure Docker
+        run: gcloud auth configure-docker "${GAR_REGION}-docker.pkg.dev" --quiet
+      - name: Build and push image
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          IMAGE="${GAR_REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${SHA}"
+          docker build -f docker/Dockerfile -t "${IMAGE}" .
+          docker push "${IMAGE}"
+          echo "IMAGE=${IMAGE}" >> "${GITHUB_ENV}"
+      - name: Get GKE credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_LOCATION }}
+          project_id: ${{ env.PROJECT_ID }}
+      - name: Deploy with Helm
+        run: |
+          helm upgrade --install cloud-native-app ./helm/cloud-native-app             --namespace cloud-native --create-namespace             --set image.repository="${IMAGE%:*}"             --set image.tag="${{ github.sha }}"
+      - name: Verify rollout
+        run: |
+          kubectl rollout status deployment/cloud-native-app-cloud-native-app             --namespace cloud-native --timeout=180s
+          kubectl get pods -n cloud-native
