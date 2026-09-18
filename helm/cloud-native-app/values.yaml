@@ -1,0 +1,31 @@
+replicaCount: 3
+image:
+  repository: REGION-docker.pkg.dev/PROJECT_ID/cloud-native-app/web
+  tag: latest
+  pullPolicy: IfNotPresent
+app:
+  environment: gke
+  message: Cloud-native application running on GKE
+  secret: replace-me-for-lab
+service:
+  type: ClusterIP
+  port: 80
+ingress:
+  enabled: true
+  className: gce
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 6
+  cpuUtilization: 60
+monitoring:
+  serviceMonitor:
+    enabled: true
+    interval: 15s
