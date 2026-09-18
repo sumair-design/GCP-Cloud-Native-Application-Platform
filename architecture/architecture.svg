@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#333"/></marker></defs>
+<style>.b{fill:#fff;stroke:#222;stroke-width:2;rx:12}.t{font:700 21px Arial}.s{font:15px Arial}.a{stroke:#333;stroke-width:2.5;fill:none;marker-end:url(#a)}</style>
+<rect class="b" x="40" y="50" width="180" height="80"/><text class="t" x="130" y="85" text-anchor="middle">Developer</text><text class="s" x="130" y="110" text-anchor="middle">Git push</text>
+<rect class="b" x="300" y="50" width="220" height="80"/><text class="t" x="410" y="85" text-anchor="middle">GitHub Actions</text><text class="s" x="410" y="110" text-anchor="middle">Build and deploy</text>
+<rect class="b" x="600" y="50" width="230" height="80"/><text class="t" x="715" y="85" text-anchor="middle">Artifact Registry</text><text class="s" x="715" y="110" text-anchor="middle">Container images</text>
+<rect class="b" x="60" y="240" width="220" height="90"/><text class="t" x="170" y="278" text-anchor="middle">GKE Ingress</text><text class="s" x="170" y="305" text-anchor="middle">External load balancer</text>
+<rect class="b" x="350" y="220" width="250" height="130"/><text class="t" x="475" y="258" text-anchor="middle">Kubernetes Service</text><text class="s" x="475" y="288" text-anchor="middle">ClusterIP + DNS</text><text class="s" x="475" y="315" text-anchor="middle">Routes to Pods</text>
+<rect class="b" x="670" y="200" width="450" height="180"/><text class="t" x="895" y="238" text-anchor="middle">GKE Workloads</text><text class="s" x="740" y="270">Deployment: 3+ replicas</text><text class="s" x="740" y="300">RollingUpdate + probes</text><text class="s" x="740" y="330">Resources + HPA</text><text class="s" x="740" y="360">ConfigMap + Secret</text>
+<rect class="b" x="230" y="500" width="250" height="90"/><text class="t" x="355" y="538" text-anchor="middle">Prometheus</text><text class="s" x="355" y="565" text-anchor="middle">Scrapes /metrics</text>
+<rect class="b" x="650" y="500" width="250" height="90"/><text class="t" x="775" y="538" text-anchor="middle">Grafana</text><text class="s" x="775" y="565" text-anchor="middle">Dashboards</text>
+<path class="a" d="M220 90 L300 90"/><path class="a" d="M520 90 L600 90"/><path class="a" d="M715 130 L715 200"/><path class="a" d="M280 285 L350 285"/><path class="a" d="M600 285 L670 285"/><path class="a" d="M800 380 L480 500"/><path class="a" d="M900 380 L775 500"/>
+</svg>
