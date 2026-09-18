@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: cloud-native-app
+  namespace: cloud-native
+  labels:
+    release: monitoring
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cloud-native-app
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
