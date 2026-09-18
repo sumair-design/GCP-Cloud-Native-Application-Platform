@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-native-app
+  namespace: cloud-native
+  labels:
+    app.kubernetes.io/name: cloud-native-app
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: cloud-native-app
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
