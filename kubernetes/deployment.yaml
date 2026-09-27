@@ -22,7 +22,8 @@ spec:
     spec:
       containers:
         - name: web
-          image: REGION-docker.pkg.dev/PROJECT_ID/cloud-native-app/web:latest
+          image: asia-south1-docker.pkg.dev/gcp-cloud-native-509022/cloud-native-app/web:v1
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8080
