@@ -1,7 +1,7 @@
 replicaCount: 3
 image:
-  repository: REGION-docker.pkg.dev/PROJECT_ID/cloud-native-app/web
-  tag: latest
+  repository: asia-south1-docker.pkg.dev/gcp-cloud-native-509022/cloud-native-app/web
+  tag: v1
   pullPolicy: IfNotPresent
 app:
   environment: gke
